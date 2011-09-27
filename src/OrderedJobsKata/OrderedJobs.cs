@@ -10,6 +10,9 @@ public class OrderedJobs
 
         if (jobStructure.Length <= 0) return;
 
-        Jobs += jobStructure.First();
+        foreach (var job in jobStructure.Split("\r\n"))
+        {
+            Jobs += job.TrimStart().First();
+        }
     }
 }

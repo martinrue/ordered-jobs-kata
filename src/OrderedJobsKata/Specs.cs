@@ -29,3 +29,22 @@ public class when_job_structure_contains_single_job
 
     static OrderedJobs orderedJobs;
 }
+
+public class when_job_structure_contains_multiple_jobs
+{
+    Because of = () =>
+    {
+        orderedJobs = new OrderedJobs(@"a => 
+                                        b => 
+                                        c => ");
+    };
+
+    It should_produce_a_sequence_containing_each_job = () =>
+    {
+        orderedJobs.Jobs[0].ShouldEqual('a');
+        orderedJobs.Jobs[1].ShouldEqual('b');
+        orderedJobs.Jobs[2].ShouldEqual('c');
+    };
+
+    static OrderedJobs orderedJobs;
+}

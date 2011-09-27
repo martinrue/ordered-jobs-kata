@@ -6,4 +6,9 @@ public static class Extensions
     {
         return String.IsNullOrEmpty(input);
     }
+
+    public static string[] Split(this string input, string delimeter)
+    {
+        return input.Split(new[] { delimeter }, StringSplitOptions.RemoveEmptyEntries);
+    }
 }
