@@ -39,6 +39,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions.cs" />
     <Compile Include="Specs.cs" />
     <Compile Include="OrderedJobs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

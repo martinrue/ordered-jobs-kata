@@ -14,3 +14,18 @@ public class when_job_structure_is_empty_string
 
     static OrderedJobs orderedJobs;
 }
+
+public class when_job_structure_contains_single_job
+{
+    Because of = () =>
+    {
+        orderedJobs = new OrderedJobs("a => "); 
+    };
+
+    It should_produce_a_sequence_containing_the_single_job = () =>
+    {
+        orderedJobs.Jobs[0].ShouldEqual('a');
+    };
+
+    static OrderedJobs orderedJobs;
+}
