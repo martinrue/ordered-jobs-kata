@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-public class OrderedJobs
+﻿public class OrderedJobs
 {
     public string Jobs { get; private set; }
 
@@ -10,9 +8,16 @@ public class OrderedJobs
 
         if (jobStructure.Length <= 0) return;
 
-        foreach (var job in jobStructure.Split("\r\n"))
+        var map = jobStructure.ConvertToMap();
+
+        foreach (var job in map)
         {
-            Jobs += job.TrimStart().First();
+            if (!job.Value.Empty())
+            {
+                if (!Jobs.Contains(job.Value)) Jobs += job.Value;
+            }
+
+            if (!Jobs.Contains(job.Key)) Jobs += job.Key;
         }
     }
 }
