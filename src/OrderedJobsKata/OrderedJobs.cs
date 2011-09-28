@@ -1,4 +1,6 @@
-﻿public class OrderedJobs
+﻿using System.Collections.Generic;
+
+public class OrderedJobs
 {
     public string Jobs { get; private set; }
 
@@ -12,12 +14,19 @@
 
         foreach (var job in map)
         {
-            if (!job.Value.Empty())
-            {
-                if (!Jobs.Contains(job.Value)) Jobs += job.Value;
-            }
+            if (jobHasDependency(job)) addJob(job.Value);
 
-            if (!Jobs.Contains(job.Key)) Jobs += job.Key;
+            addJob(job.Key);
         }
+    }
+
+    private void addJob(string job)
+    {
+        if (!Jobs.Contains(job)) Jobs += job;
+    }
+
+    private bool jobHasDependency(KeyValuePair<string, string> job)
+    {
+        return !job.Value.Empty();
     }
 }
