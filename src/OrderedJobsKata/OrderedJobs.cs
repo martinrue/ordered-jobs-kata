@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 public class OrderedJobs
 {
@@ -6,27 +8,24 @@ public class OrderedJobs
 
     public OrderedJobs(string jobStructure)
     {
-        Jobs = string.Empty;
+        Jobs = String.Empty;
 
         if (jobStructure.Length <= 0) return;
 
         var map = jobStructure.ConvertToMap();
-
-        foreach (var job in map)
-        {
-            if (jobHasDependency(job)) addJob(job.Value);
-
-            addJob(job.Key);
-        }
+        
+        map.Each(job => addUniqueJobs(followDependencies(job.Key, map)));
     }
 
-    private void addJob(string job)
+    private string followDependencies(string job, IDictionary<string, string> map)
     {
-        if (!Jobs.Contains(job)) Jobs += job;
+        if (map[job].Empty()) return job;
+
+        return followDependencies(map[job], map) + job;
     }
 
-    private bool jobHasDependency(KeyValuePair<string, string> job)
+    private void addUniqueJobs(string jobs)
     {
-        return !job.Value.Empty();
+        jobs.Where(job => !Jobs.Contains(job.ToString())).Each(job => Jobs += job);
     }
 }

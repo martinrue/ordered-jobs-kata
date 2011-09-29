@@ -21,4 +21,12 @@ public static class Extensions
             .Select(job => Regex.Match(job, @"(\w+) => (\w?)"))
             .ToDictionary(match => match.Groups[1].Value, match => match.Groups[2].Value);
     }
+
+    public static void Each<T>(this IEnumerable<T> source, Action<T> action)
+    {
+        foreach (var element in source)
+        {
+            action(element);
+        }
+    }
 }

@@ -67,3 +67,28 @@ public class when_job_structure_contains_multiple_jobs_with_single_dependency
 
     static OrderedJobs orderedJobs;
 }
+
+public class when_job_structure_contains_multiple_jobs_with_chained_dependencies
+{
+    Because of = () =>
+    {
+        orderedJobs = new OrderedJobs(@"a => 
+                                        b => c
+                                        c => f
+                                        d => a
+                                        e => b
+                                        f => ");
+    };
+
+    It should_produce_a_sequence_containing_each_job_in_correct_order = () =>
+    {
+        orderedJobs.Jobs[0].ShouldEqual('a');
+        orderedJobs.Jobs[1].ShouldEqual('f');
+        orderedJobs.Jobs[2].ShouldEqual('c');
+        orderedJobs.Jobs[3].ShouldEqual('b');
+        orderedJobs.Jobs[4].ShouldEqual('d');
+        orderedJobs.Jobs[5].ShouldEqual('e');
+    };
+
+    static OrderedJobs orderedJobs;
+}
