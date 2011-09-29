@@ -1,6 +1,7 @@
 ﻿using System;
 using Machine.Specifications;
 
+// Step 1 – Empty String
 public class when_job_structure_is_empty_string
 {
     Because of = () =>
@@ -16,6 +17,7 @@ public class when_job_structure_is_empty_string
     static OrderedJobs orderedJobs;
 }
 
+// Step 2 – Single Job
 public class when_job_structure_contains_single_job
 {
     Because of = () =>
@@ -31,6 +33,7 @@ public class when_job_structure_contains_single_job
     static OrderedJobs orderedJobs;
 }
 
+// Step 3 – Multiple Jobs
 public class when_job_structure_contains_multiple_jobs
 {
     Because of = () =>
@@ -50,6 +53,7 @@ public class when_job_structure_contains_multiple_jobs
     static OrderedJobs orderedJobs;
 }
 
+// Step 4 – Multiple Jobs, Single Dependency
 public class when_job_structure_contains_multiple_jobs_with_single_dependency
 {
     Because of = () =>
@@ -69,6 +73,7 @@ public class when_job_structure_contains_multiple_jobs_with_single_dependency
     static OrderedJobs orderedJobs;
 }
 
+// Step 5 – Multiple Jobs, Multiple Dependencies
 public class when_job_structure_contains_multiple_jobs_with_chained_dependencies
 {
     Because of = () =>
@@ -94,15 +99,16 @@ public class when_job_structure_contains_multiple_jobs_with_chained_dependencies
     static OrderedJobs orderedJobs;
 }
 
+// Step 6 – Multiple Jobs, Self Referencing Dependency
 public class when_job_structure_contains_self_referencing_dependency
 {
     Because of = () =>
     {
         try
         {
-            orderedJobs = new OrderedJobs(@"a => 
-                                            b => 
-                                            c => c");
+            new OrderedJobs(@"a => 
+                              b => 
+                              c => c");
         }
         catch (Exception ex)
         {
@@ -115,6 +121,33 @@ public class when_job_structure_contains_self_referencing_dependency
         exception.Message.ShouldContain("can't depend on themselves");
     };
 
-    static OrderedJobs orderedJobs;
+    static Exception exception;
+}
+
+// Step 7 – Multiple Jobs, Circular Dependency Chain
+public class when_job_structure_contains_circular_dependency_chain
+{
+    Because of = () =>
+    {
+        try
+        {
+            new OrderedJobs(@"a => 
+                              b => c
+                              c => f
+                              d => a
+                              e => 
+                              f => b");
+        }
+        catch (Exception ex)
+        {
+            exception = ex;
+        }
+    };
+
+    It should_throw_an_error = () =>
+    {
+        exception.Message.ShouldContain("can't have circular dependencies");
+    };
+
     static Exception exception;
 }
