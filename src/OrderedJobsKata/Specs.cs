@@ -104,16 +104,9 @@ public class when_job_structure_contains_self_referencing_dependency
 {
     Because of = () =>
     {
-        try
-        {
-            new OrderedJobs(@"a => 
-                              b => 
-                              c => c");
-        }
-        catch (Exception ex)
-        {
-            exception = ex;
-        }
+        exception = Catch.Exception(() => new OrderedJobs(@"a => 
+                                                            b => 
+                                                            c => c"));
     };
 
     It should_throw_an_error = () =>
@@ -129,19 +122,12 @@ public class when_job_structure_contains_circular_dependency_chain
 {
     Because of = () =>
     {
-        try
-        {
-            new OrderedJobs(@"a => 
-                              b => c
-                              c => f
-                              d => a
-                              e => 
-                              f => b");
-        }
-        catch (Exception ex)
-        {
-            exception = ex;
-        }
+        exception = Catch.Exception(() => new OrderedJobs(@"a => 
+                                                            b => c
+                                                            c => f
+                                                            d => a
+                                                            e => 
+                                                            f => b"));
     };
 
     It should_throw_an_error = () =>
