@@ -1,4 +1,5 @@
-﻿using Machine.Specifications;
+﻿using System;
+using Machine.Specifications;
 
 public class when_job_structure_is_empty_string
 {
@@ -91,4 +92,29 @@ public class when_job_structure_contains_multiple_jobs_with_chained_dependencies
     };
 
     static OrderedJobs orderedJobs;
+}
+
+public class when_job_structure_contains_self_referencing_dependency
+{
+    Because of = () =>
+    {
+        try
+        {
+            orderedJobs = new OrderedJobs(@"a => 
+                                            b => 
+                                            c => c");
+        }
+        catch (Exception ex)
+        {
+            exception = ex;
+        }
+    };
+
+    It should_throw_an_error = () =>
+    {
+        exception.Message.ShouldContain("can't depend on themselves");
+    };
+
+    static OrderedJobs orderedJobs;
+    static Exception exception;
 }

@@ -21,6 +21,8 @@ public class OrderedJobs
     {
         if (map[job].Empty()) return job;
 
+        if (job == map[job]) throw new Exception("jobs can't depend on themselves");
+
         return followDependencies(map[job], map) + job;
     }
 
